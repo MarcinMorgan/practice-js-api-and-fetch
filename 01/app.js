@@ -5,8 +5,6 @@ function init() {
     
     setBorderColorAsync(divList[0], 'red', firstCallback)
 
-
-
     function firstCallback() {
         setBorderColorAsync(divList[1], 'blue', secondCallback);
     }
