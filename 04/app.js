@@ -17,7 +17,7 @@ function init() {
 
         const lat = parseFloat(latInput.value);
         const lng = parseFloat(lngInput.value);
-        const key = '';
+        const key = ''; // key not included
         if(!isNaN(lat) && !isNaN(lng)) {
             latOutput.innerText = lat;
             lngOutput.innerText = lng;
@@ -26,13 +26,17 @@ function init() {
         const promise = fetch(`https://api.weatherbit.io/v2.0/current?key=${key}&lat=${lat}&lon=${lng}&lang=pl&units=I`);
 
         promise
-           .then(reqJSON => reqJSON.text())
+           .then(resp => resp.text())
            .then(resp => { 
                 const dataJSON = JSON.parse(resp);
+                if (dataJSON.error) {
+                    return Promise.reject(dataJSON.error)
+                };
                 const arrJSON = {...dataJSON.data};
                 weatherTemp.innerText = arrJSON[0].app_temp;
                 weatherSummary.innerText = arrJSON[0].weather.description;
             })
+            .catch(err => alert(err));
     })
 
 } 
