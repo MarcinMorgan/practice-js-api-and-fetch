@@ -1,12 +1,29 @@
 const apiUrl = 'http://localhost:3000/users';
+const addUserBtn = document.querySelector('.form__submit');
+const firstNameEl = document.querySelector('.form__field--first-name');
+const lastNameEl = document.querySelector('.form__field--last-name');
 
 document.addEventListener('DOMContentLoaded', init);
 
 function init() {
     loadUsers();
+    addUserBtn.addEventListener('click', () => {
+        const userData = {
+            firstName: firstNameEl.value,
+            lastName: lastNameEl.value,
+        };
+        const options = {
+            method: 'POST',
+            body: JSON.stringify(userData)
+        };
+        const promisePost = fetch(apiUrl, options);
+
+        promisePost
+            .finally(loadUsers());
+    })
 }
 
-function loadUsers() {
+function loadUsers() {   
     const promise = fetchGet(apiUrl);
 
     promise
